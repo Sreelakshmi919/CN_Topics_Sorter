@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#172554">
+<title>Computer Networks Topic Sorter | PCCST501</title>
+<style>
+:root{--ink:#18243b;--muted:#65738b;--line:#e3e9f2;--paper:#f4f7fc;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1120px;margin:auto;padding:0 18px}
+.hero{padding:36px 18px 32px;color:#fff;background:linear-gradient(120deg,#172554,#1d4ed8 58%,#0891b2)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;opacity:.86}
+h1{font-size:clamp(29px,5vw,46px);line-height:1.1;margin:10px 0}.hero p{margin:0;opacity:.9}
+main{padding:23px 0 52px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat,.panel,.topic-card{background:var(--white);border:1px solid var(--line);border-radius:17px;box-shadow:0 5px 18px #1725540a}
+.stat{padding:14px 17px}.stat b{display:block;font-size:25px}.stat span{font-size:12px;color:var(--muted)}
+.progress-panel{padding:15px 17px;margin-top:13px}.progress-meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px}.track{height:10px;border-radius:20px;background:#e8edf5;overflow:hidden;margin-top:9px}.fill{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#06b6d4);transition:width .2s}
+.controls{display:grid;grid-template-columns:1.6fr 1fr 1fr auto;gap:10px;align-items:end;padding:15px;margin:17px 0}
+.field label{display:block;font-size:11px;letter-spacing:.07em;font-weight:800;color:#58677e;margin-bottom:5px}
+input[type=search],select{width:100%;padding:11px 12px;border:1px solid #d5deea;border-radius:10px;background:#fff;color:var(--ink);font:inherit}
+button{border:0;border-radius:10px;padding:11px 14px;background:#1d4ed8;color:white;font:inherit;font-weight:750;cursor:pointer}button.secondary{background:#edf3ff;color:#1d4ed8;border:1px solid #d8e4ff}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.topic-card{overflow:hidden}.card-head{padding:13px 15px;color:#fff;display:flex;align-items:center;gap:10px}.number{height:31px;width:31px;flex:none;border-radius:50%;background:#ffffff35;display:grid;place-items:center;font-weight:850}.card-head h2{font-size:16px;line-height:1.3;margin:0;flex:1}.module{font-size:11px;opacity:.9;white-space:nowrap}
+.topic-list{padding:9px 14px 13px}.topic{display:flex;gap:9px;align-items:flex-start;padding:7px 2px;border-bottom:1px solid #f0f2f6;cursor:pointer}.topic:last-child{border:0}.topic input{margin:4px 0 0;width:16px;height:16px;flex:none;accent-color:#1d4ed8}.topic span{flex:1}.topic.done span{text-decoration:line-through;color:#8994a5}.empty{grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)}
+.note{font-size:12px;color:var(--muted);margin:13px 2px 0}footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0}
+@media(max-width:760px){.controls{grid-template-columns:1fr 1fr}.search{grid-column:1/-1}.grid{grid-template-columns:1fr}}
+@media(max-width:430px){.stats{gap:7px}.stat{padding:11px}.stat b{font-size:21px}.controls{grid-template-columns:1fr}.search{grid-column:auto}.module{display:none}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap"><div class="eyebrow">Semester 5 · PCCST501</div><h1>Computer Networks</h1><p>Your syllabus, reorganized into a topic-by-topic study path. Tick off each topic as you complete it and track your progress.</p></div></header>
+<main class="wrap">
+<section class="stats" aria-label="Study statistics"><div class="stat"><b id="total">0</b><span>Total topics</span></div><div class="stat"><b id="completed">0</b><span>Completed</span></div><div class="stat"><b id="remaining">0</b><span>Remaining</span></div></section>
+<section class="panel progress-panel"><div class="progress-meta"><strong>Overall study progress</strong><strong id="percent">0%</strong></div><div class="track"><div class="fill" id="fill"></div></div></section>
+<section class="panel controls" aria-label="Topic controls">
+<div class="field search"><label for="search">SEARCH TOPICS</label><input id="search" type="search" placeholder="Try TCP, DNS, routing, Ethernet..."></div>
+<div class="field"><label for="filter">SHOW</label><select id="filter"><option value="all">All topics</option><option value="todo">Not completed</option><option value="done">Completed</option></select></div>
+<div class="field"><label for="order">ORDER</label><select id="order"><option value="path">Study path</option><option value="az">A–Z within section</option></select></div>
+<button class="secondary" id="reset" type="button">Reset progress</button>
+</section>
+<div class="grid" id="topics"></div>
+<p class="note">Study order is arranged from foundational concepts upward through the network layers, then practical programming and network management. Original module numbers and book references are shown to help you cross-check your syllabus. Hands-on items are included as listed in the syllabus.</p>
+<footer>Computer Networks · PCCST501 · Your checked topics are saved in this browser on this device.</footer>
+</main>
+<script>
+const sections=[
+{title:"1. Networking Foundations",module:"Module 1",color:"#2563eb",topics:[
+"Overview of the Internet (Book 1, Chapter 1)","Protocol Layering (Book 1, Chapter 1)"]},
+{title:"2. Physical Layer",module:"Module 4",color:"#0891b2",topics:[
+"Data and Signals (Book 1, Chapter 7)","Digital Transmission","Analog Transmission","Bandwidth Utilization","Transmission Media (Book 1, Chapter 7)"]},
+{title:"3. Data-Link Layer",module:"Module 3",color:"#0f9388",topics:[
+"Data-Link Control (DLC)","Multiple Access Protocols (MAC)","Link-Layer Addressing","Ethernet Protocol","Connecting Devices","Wireless LANs","Mobile IP (Book 1, Chapter 6)"]},
+{title:"4. Network Layer & Routing",module:"Module 2",color:"#7c3aed",topics:[
+"Introduction to the Network Layer","Network-Layer Protocols","Unicast Routing","Multicast Routing Basics","Intra-Domain Routing","Inter-Domain Routing","Next Generation IP","Quality of Service (QoS) (Book 1, Chapters 4 and 8)"]},
+{title:"5. Transport Layer",module:"Module 2",color:"#db2777",topics:[
+"Transport-Layer Services (Book 1, Chapter 3)","Transport-Layer Protocols","User Datagram Protocol (UDP)","Transmission Control Protocol (TCP)"]},
+{title:"6. Socket Programming & Network Hands-on",module:"Module 2",color:"#d97706",topics:[
+"Introduction to Sockets","Elementary TCP Sockets","TCP Client/Server Example","I/O Multiplexing: select and poll Functions","Elementary UDP Sockets","Advanced I/O Functions","Linux Kernel Implementation of Routing Table and Caches","Routing Cache Implementation Overview","Adding a New Entry in the Routing Table Using the ip Command (Book 3, Chapter 14)"]},
+{title:"7. Application Layer",module:"Module 1",color:"#ea580c",topics:[
+"Application-Layer Paradigms","Client-Server Applications","World Wide Web (WWW)","HTTP","File Transfer Protocol (FTP)","Electronic Mail","Domain Name System (DNS) (Book 1, Chapter 2)"]},
+{title:"8. Peer-to-Peer Networking",module:"Module 1",color:"#16a34a",topics:[
+"Peer-to-Peer (P2P) Paradigm","P2P Networks","BitTorrent Case Study (Book 1, Chapter 2)"]},
+{title:"9. Data-Link Layer Practical Topics",module:"Module 3",color:"#4f46e5",topics:[
+"Datalink Provider Interface","SOCK_PACKET","PF_PACKET (Book 2, Chapter 29)"]},
+{title:"10. Network Management",module:"Module 4",color:"#be123c",topics:[
+"Simple Network Management Protocol (SNMP)","Abstract Syntax Notation One (ASN.1) (Book 1, Chapter 9)"]}
+];
+const all=sections.flatMap((s,i)=>s.topics.map((name,j)=>({id:i+"-"+j,name,section:i})));
+const storageKey="pccst501-cn-topic-sorter-v1";let done=new Set();
+try{done=new Set(JSON.parse(localStorage.getItem(storageKey)||"[]"))}catch(e){}
+const byId=id=>document.getElementById(id);
+function save(){try{localStorage.setItem(storageKey,JSON.stringify([...done]))}catch(e){}}
+function updateStats(){const total=all.length,count=done.size,p=total?Math.round(count/total*100):0;byId("total").textContent=total;byId("completed").textContent=count;byId("remaining").textContent=total-count;byId("percent").textContent=p+"%";byId("fill").style.width=p+"%"}
+function render(){const q=byId("search").value.trim().toLowerCase(),f=byId("filter").value,order=byId("order").value,root=byId("topics");root.innerHTML="";let visible=0;
+sections.forEach((s,i)=>{let topics=s.topics.map((name,j)=>({id:i+"-"+j,name,checked:done.has(i+"-"+j)}));if(order==="az")topics.sort((a,b)=>a.name.localeCompare(b.name));topics=topics.filter(t=>(!q||t.name.toLowerCase().includes(q)||s.title.toLowerCase().includes(q))&&(f==="all"||(f==="done"?t.checked:!t.checked)));if(!topics.length)return;visible+=topics.length;
+const card=document.createElement("section");card.className="topic-card";const head=document.createElement("div");head.className="card-head";head.style.background=s.color;const n=document.createElement("div");n.className="number";n.textContent=i+1;const h=document.createElement("h2");h.textContent=s.title;const mod=document.createElement("span");mod.className="module";mod.textContent=s.module;head.append(n,h,mod);card.append(head);
+const list=document.createElement("div");list.className="topic-list";topics.forEach(t=>{const label=document.createElement("label");label.className="topic"+(t.checked?" done":"");const cb=document.createElement("input");cb.type="checkbox";cb.checked=t.checked;cb.setAttribute("aria-label","Mark "+t.name+" completed");cb.addEventListener("change",()=>{if(cb.checked)done.add(t.id);else done.delete(t.id);save();render()});const text=document.createElement("span");text.textContent=t.name;label.append(cb,text);list.append(label)});card.append(list);root.append(card)});
+if(!visible){const empty=document.createElement("div");empty.className="empty";empty.textContent="No topics match your search or selected filter.";root.append(empty)}updateStats()}
+byId("search").addEventListener("input",render);byId("filter").addEventListener("change",render);byId("order").addEventListener("change",render);
+byId("reset").addEventListener("click",()=>{if(confirm("Clear all completed topics and reset your progress?")){done.clear();save();render()}});render();
+</script>
+</body></html>
