@@ -28,45 +28,40 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 </style>
 </head>
 <body>
-<header class="hero"><div class="wrap"><div class="eyebrow">Semester 5 · PCCST501</div><h1>Computer Networks</h1><p>Your syllabus, reorganized into a topic-by-topic study path. Tick off each topic as you complete it and track your progress.</p></div></header>
+<header class="hero"><div class="wrap"><div class="eyebrow">Semester 5 · PCCST501</div><h1>Computer Networks</h1><p>Topics are grouped under their original syllabus modules and listed individually in syllabus order. Tick off each topic as you complete it and track your progress.</p></div></header>
 <main class="wrap">
 <section class="stats" aria-label="Study statistics"><div class="stat"><b id="total">0</b><span>Total topics</span></div><div class="stat"><b id="completed">0</b><span>Completed</span></div><div class="stat"><b id="remaining">0</b><span>Remaining</span></div></section>
 <section class="panel progress-panel"><div class="progress-meta"><strong>Overall study progress</strong><strong id="percent">0%</strong></div><div class="track"><div class="fill" id="fill"></div></div></section>
 <section class="panel controls" aria-label="Topic controls">
 <div class="field search"><label for="search">SEARCH TOPICS</label><input id="search" type="search" placeholder="Try TCP, DNS, routing, Ethernet..."></div>
 <div class="field"><label for="filter">SHOW</label><select id="filter"><option value="all">All topics</option><option value="todo">Not completed</option><option value="done">Completed</option></select></div>
-<div class="field"><label for="order">ORDER</label><select id="order"><option value="path">Study path</option><option value="az">A–Z within section</option></select></div>
+<div class="field"><label for="order">ORDER</label><select id="order"><option value="path">Study path</option><option value="az">A–Z within module</option></select></div>
 <button class="secondary" id="reset" type="button">Reset progress</button>
 </section>
 <div class="grid" id="topics"></div>
-<p class="note">Study order is arranged from foundational concepts upward through the network layers, then practical programming and network management. Original module numbers and book references are shown to help you cross-check your syllabus. Hands-on items are included as listed in the syllabus.</p>
+<p class="note">Topics are arranged module-wise to match your official syllabus, with each module broken into individual study topics. Book references and hands-on items are retained where shown in the syllabus.</p>
 <footer>Computer Networks · PCCST501 · Your checked topics are saved in this browser on this device.</footer>
 </main>
 <script>
 const sections=[
-{title:"1. Networking Foundations",module:"Module 1",color:"#2563eb",topics:[
-"Overview of the Internet (Book 1, Chapter 1)","Protocol Layering (Book 1, Chapter 1)"]},
-{title:"2. Physical Layer",module:"Module 4",color:"#0891b2",topics:[
-"Data and Signals (Book 1, Chapter 7)","Digital Transmission","Analog Transmission","Bandwidth Utilization","Transmission Media (Book 1, Chapter 7)"]},
-{title:"3. Data-Link Layer",module:"Module 3",color:"#0f9388",topics:[
-"Data-Link Control (DLC)","Multiple Access Protocols (MAC)","Link-Layer Addressing","Ethernet Protocol","Connecting Devices","Wireless LANs","Mobile IP (Book 1, Chapter 6)"]},
-{title:"4. Network Layer & Routing",module:"Module 2",color:"#7c3aed",topics:[
-"Introduction to the Network Layer","Network-Layer Protocols","Unicast Routing","Multicast Routing Basics","Intra-Domain Routing","Inter-Domain Routing","Next Generation IP","Quality of Service (QoS) (Book 1, Chapters 4 and 8)"]},
-{title:"5. Transport Layer",module:"Module 2",color:"#db2777",topics:[
-"Transport-Layer Services (Book 1, Chapter 3)","Transport-Layer Protocols","User Datagram Protocol (UDP)","Transmission Control Protocol (TCP)"]},
-{title:"6. Socket Programming & Network Hands-on",module:"Module 2",color:"#d97706",topics:[
-"Introduction to Sockets","Elementary TCP Sockets","TCP Client/Server Example","I/O Multiplexing: select and poll Functions","Elementary UDP Sockets","Advanced I/O Functions","Linux Kernel Implementation of Routing Table and Caches","Routing Cache Implementation Overview","Adding a New Entry in the Routing Table Using the ip Command (Book 3, Chapter 14)"]},
-{title:"7. Application Layer",module:"Module 1",color:"#ea580c",topics:[
-"Application-Layer Paradigms","Client-Server Applications","World Wide Web (WWW)","HTTP","File Transfer Protocol (FTP)","Electronic Mail","Domain Name System (DNS) (Book 1, Chapter 2)"]},
-{title:"8. Peer-to-Peer Networking",module:"Module 1",color:"#16a34a",topics:[
+{title:"Module 1 — Internet, Application Layer & P2P",module:"Module 1",color:"#2563eb",topics:[
+"Overview of the Internet (Book 1, Chapter 1)","Protocol Layering (Book 1, Chapter 1)",
+"Application-Layer Paradigms","Client-Server Applications","World Wide Web (WWW) and HTTP","File Transfer Protocol (FTP)","Electronic Mail","Domain Name System (DNS) (Book 1, Chapter 2)",
 "Peer-to-Peer (P2P) Paradigm","P2P Networks","BitTorrent Case Study (Book 1, Chapter 2)"]},
-{title:"9. Data-Link Layer Practical Topics",module:"Module 3",color:"#4f46e5",topics:[
+{title:"Module 2 — Transport Layer, Network Layer & Socket Programming",module:"Module 2",color:"#7c3aed",topics:[
+"Transport-Layer Services (Book 1, Chapter 3)","Transport-Layer Protocols","User Datagram Protocol (UDP)","Transmission Control Protocol (TCP)",
+"Introduction to Sockets","Elementary TCP Sockets","TCP Client/Server Example","I/O Multiplexing: select and poll Functions","Elementary UDP Sockets","Advanced I/O Functions",
+"Introduction to the Network Layer","Network-Layer Protocols","Unicast Routing","Multicast Routing — Multicasting Basics","Intra-Domain Routing","Inter-Domain Routing","Next Generation IP","Quality of Service (QoS) (Book 1, Chapter 4 and Chapter 8)",
+"Linux Kernel Implementation of Routing Table and Caches","Routing Cache Implementation Overview","Adding a New Entry in the Routing Table Using the ip Command (Book 3, Chapter 14)"]},
+{title:"Module 3 — Data-Link Layer",module:"Module 3",color:"#0f9388",topics:[
+"Data-Link Control (DLC)","Multiple Access Protocols (MAC)","Link-Layer Addressing","Ethernet Protocol","Connecting Devices","Wireless LANs","Mobile IP (Book 1, Chapter 6)",
 "Datalink Provider Interface","SOCK_PACKET","PF_PACKET (Book 2, Chapter 29)"]},
-{title:"10. Network Management",module:"Module 4",color:"#be123c",topics:[
-"Simple Network Management Protocol (SNMP)","Abstract Syntax Notation One (ASN.1) (Book 1, Chapter 9)"]}
+{title:"Module 4 — Network Management & Physical Layer",module:"Module 4",color:"#d97706",topics:[
+"Simple Network Management Protocol (SNMP)","Abstract Syntax Notation One (ASN.1) (Book 1, Chapter 9)",
+"Data and Signals (Book 1, Chapter 7)","Digital Transmission","Analog Transmission","Bandwidth Utilization","Transmission Media (Book 1, Chapter 7)"]}
 ];
 const all=sections.flatMap((s,i)=>s.topics.map((name,j)=>({id:i+"-"+j,name,section:i})));
-const storageKey="pccst501-cn-topic-sorter-v1";let done=new Set();
+const storageKey="pccst501-cn-topic-sorter-v2";let done=new Set();
 try{done=new Set(JSON.parse(localStorage.getItem(storageKey)||"[]"))}catch(e){}
 const byId=id=>document.getElementById(id);
 function save(){try{localStorage.setItem(storageKey,JSON.stringify([...done]))}catch(e){}}
